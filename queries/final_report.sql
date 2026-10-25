@@ -1,5 +1,5 @@
 -- Исходный отчёт содержит ошибки. Исправьте SQL самостоятельно.
--- Контракт: одна строка на каждый заказ; четыре поля указаны ниже.
+-- Контракт: одна строка на каждый заказ; пять полей указаны ниже.
 SELECT o.order_id, o.order_status,
        SUM(i.quantity * i.unit_price_cents) AS order_amount_cents,
        SUM(p.amount_cents) AS paid_amount_cents,
