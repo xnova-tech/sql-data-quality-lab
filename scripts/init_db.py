@@ -9,6 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from lab.console import configure_console  # noqa: E402
 from lab.database import APPLICATION_ID, ROOT, create_database  # noqa: E402
 
 
@@ -26,6 +27,7 @@ def can_replace(target: Path) -> bool:
 
 
 def main() -> int:
+    configure_console()
     parser = argparse.ArgumentParser(description="Создать учебную SQLite-базу")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()

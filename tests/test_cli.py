@@ -1,5 +1,6 @@
 """Команды работают без сети и не перезаписывают чужие базы."""
 
+import os
 import sqlite3
 import subprocess
 import sys
@@ -14,6 +15,7 @@ def run_script(name: str, *arguments: str) -> subprocess.CompletedProcess[str]:
         cwd=ROOT,
         check=False,
         text=True,
+        encoding="utf-8",
         capture_output=True,
     )
 
@@ -38,3 +40,18 @@ def test_init_preserves_unrelated_database(tmp_path: Path) -> None:
     assert result.returncode != 0
     assert "не является базой" in result.stderr
     assert target.read_bytes() == original
+
+
+def test_cli_uses_utf8_with_legacy_console_encoding() -> None:
+    environment = {**os.environ, "PYTHONUTF8": "0", "PYTHONIOENCODING": "cp1252"}
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "check.py"), "--smoke"],
+        cwd=ROOT,
+        env=environment,
+        check=False,
+        text=True,
+        encoding="utf-8",
+        capture_output=True,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "исходные таблицы" in result.stdout

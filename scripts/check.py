@@ -7,10 +7,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from lab.checker import CheckError, Task, check_task, smoke  # noqa: E402
+from lab.console import configure_console  # noqa: E402
 from lab.reference import DataQualityError  # noqa: E402
 
 
 def main() -> int:
+    configure_console()
     parser = argparse.ArgumentParser(description="Проверить локальный SQL на исходных и изменённых данных")
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument("--smoke", action="store_true", help="проверить исходные таблицы и сам стенд")
